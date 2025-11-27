@@ -93,7 +93,18 @@ func MarkDone(strId string) error {
 }
 
 func ListTasks(op string) error {
-	errMsg := "Invalid argument. Usage: taskapp list [option]"
+	errMsg := "Invalid argument. Usage: taskapp list OR taskapp list [option]"
+
+	op = strings.ToLower(strings.TrimSpace(op))
+	validOps := map[string]bool{
+		"":            true,
+		"done":        true,
+		"todo":        true,
+		"in-progress": true,
+	}
+	if !validOps[op] {
+		return errors.New(errMsg)
+	}
 
 	// Listing logic
 
@@ -108,16 +119,17 @@ Usage:
     taskapp <command> [options]
 
 Commands:
-	task-cli add "Buy groceries"
-	task-cli update 1 "Buy groceries and cook dinner"
-	task-cli delete 1
+	task-cli add			 	"add a new task"
+	task-cli update				"update a task"
+	task-cli delete				"delete a task"
 
-	task-cli mark-in-progress 1
-	task-cli mark-done 1
+	task-cli mark-in-progress	"mark a task as in-progress"
+	task-cli mark-done			"mark a task as done"
 
-	task-cli list
-	task-cli list done
-	task-cli list todo
-	task-cli list in-progress
+	task-cli list				"list all tasks"
+	task-cli list done			"list completed tasks"
+	task-cli list todo			"list pending tasks"
+	task-cli list in-progress	"list tasks in progress"
+	task-cli help				"display this help message"
 	`)
 }

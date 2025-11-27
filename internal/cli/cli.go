@@ -31,7 +31,10 @@ func UpdateTask(args []string) error {
 	id, err := strconv.Atoi(args[0])
 	desc := strings.TrimSpace(args[1])
 	if err != nil || desc == "" {
-		return errors.New(errMsg)
+		if errors.Is(err, strconv.ErrSyntax) || desc == "" {
+			return errors.New(errMsg)
+		}
+		return err
 	}
 
 	// Update logic
@@ -45,7 +48,10 @@ func DeleteTask(strId string) error {
 
 	id, err := strconv.Atoi(strId)
 	if err != nil {
-		return errors.New(errMsg)
+		if errors.Is(err, strconv.ErrSyntax) {
+			return errors.New(errMsg)
+		}
+		return err
 	}
 
 	// Delete logic
@@ -59,7 +65,10 @@ func MarkInProgress(strId string) error {
 
 	id, err := strconv.Atoi(strId)
 	if err != nil {
-		return errors.New(errMsg)
+		if errors.Is(err, strconv.ErrSyntax) {
+			return errors.New(errMsg)
+		}
+		return err
 	}
 
 	// Mark as in progress logic
@@ -72,7 +81,10 @@ func MarkDone(strId string) error {
 
 	id, err := strconv.Atoi(strId)
 	if err != nil {
-		return errors.New(errMsg)
+		if errors.Is(err, strconv.ErrSyntax) {
+			return errors.New(errMsg)
+		}
+		return err
 	}
 
 	// Mark as done logic
